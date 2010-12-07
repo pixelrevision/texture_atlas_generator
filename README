@@ -1,0 +1,13 @@
+Texture atlas maker
+This tool is used to convert timeline based animation into a spritesheet from an swf. it is very handy for creating texture atlas files that can be used with the sparrow framework
+
+Steps:
+Create a new fla and make sure it is minimum flash 9 using as3.
+Start creating movieclips that you want to be written to a sprite sheet. Be sure to avoid using actionscript, and if you have sub clips use graphics as opposed to movieclips so that they get picked up.
+Drag all the movieclips you want rendered to the main stage and name them.
+Export the swf and load it into the tool.
+Modify the size of the sprite sheet to fit your needs. Power of 2 textures are recommended:1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, etc..
+Save the file. You will now have a zip containing your image a piece of xml and a piece of json you can use for your project.
+
+A demo swf can be downloaded at:
+http://pixelrevision.com/8bit/texture_atlas_creator/mario_example.zip
