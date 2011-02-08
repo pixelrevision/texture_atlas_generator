@@ -51,7 +51,6 @@ package com.pixelrevision.textureAtlas{
 						sprData[lastName][lastFrame] = {};
 						sprData[lastName][lastFrame].start = start;
 						sprData[lastName][lastFrame].count = end - start + 1;
-						trace("adding", lastName, lastFrame, end - start + 1);
 					}
 					sprData[items[i].clipName] = {};
 					lastName = items[i].clipName;
@@ -59,7 +58,6 @@ package com.pixelrevision.textureAtlas{
 					start = -1;
 					sprData[lastName] = {};
 				}
-				
 				if(items[i].frameName != ""){
 					if(start != -1){
 						end = frameNumber - 1;
@@ -99,7 +97,6 @@ package com.pixelrevision.textureAtlas{
 				hasData = false;
 			}
 			lua += "end\n";
-			// trace(lua);
 			return lua;
 			
 		}
@@ -178,7 +175,6 @@ package com.pixelrevision.textureAtlas{
 			node += "}";
 			return node;
 		}
-		
 		
 	}
 }

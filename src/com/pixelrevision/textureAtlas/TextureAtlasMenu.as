@@ -49,6 +49,13 @@ package com.pixelrevision.textureAtlas{
 			saveSWFButton = new PushButton(this, 0, PADDING, "Save");
 			saveSWFButton.visible = false;
 			layout();
+			
+			// _settings.addEventListener(TextureAtlasEvent.CANVAS_SIZE_CHANGED, canvasChanged);
+		}
+		
+		private function canvasChanged(e:TextureAtlasEvent):void{
+			wInput.text = _settings.canvasWidth.toString();
+			hInput.text = _settings.canvasHeight.toString();
 		}
 		
 		public function activateSave(e:TextureAtlasEvent):void{

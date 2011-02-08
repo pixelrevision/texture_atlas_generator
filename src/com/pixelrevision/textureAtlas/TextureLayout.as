@@ -40,8 +40,8 @@ package com.pixelrevision.textureAtlas{
 					yPos += maxY;
 					maxY = 0;
 				}
-				if(_items[i].height > maxY){
-					maxY = _items[i].height;
+				if(_items[i].height + 1 > maxY){
+					maxY = _items[i].height + 1;
 				}
 				_items[i].x = xPos;
 				_items[i].y = yPos;
@@ -52,9 +52,14 @@ package com.pixelrevision.textureAtlas{
 		private function drawBounds(e:TextureAtlasEvent):void{
 			graphics.clear();
 			graphics.lineStyle(1, 0x000000);
-			graphics.drawRect(0, 0, _settings.canvasWidth, _settings.canvasHeight);
+			graphics.drawRect(0, 0, _settings.canvasWidth-1, _settings.canvasHeight-1);
 			layoutChildren();
 			dispatchEvent(new TextureAtlasEvent(TextureAtlasEvent.CANVAS_SIZE_CHANGED) );
+		}
+		
+		public function get withinBounds():Boolean{
+			trace(this.width, _settings.canvasWidth, this.height, _settings.canvasHeight);
+			return (this.width <= _settings.canvasWidth && this.height <= _settings.canvasHeight);
 		}
 		
 		public function addItem(item:TextureItem):void{

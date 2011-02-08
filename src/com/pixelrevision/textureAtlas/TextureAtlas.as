@@ -18,6 +18,8 @@ package com.pixelrevision.textureAtlas{
 		private var _swfLoader:SWFFileLoader;
 		private var _settings:Settings;
 		
+		public static const POW_2:Array = [32, 64, 128, 256, 512, 1024, 2048, 4096];
+		
 		public function TextureAtlas(){
 			super();
 			setup();
@@ -41,7 +43,7 @@ package com.pixelrevision.textureAtlas{
 			addChild(scrollWindow);
 			
 			textureLayout = new TextureLayout();
-			textureLayout.addEventListener(TextureAtlasEvent.CANVAS_SIZE_CHANGED, checkScroll)
+			textureLayout.addEventListener(TextureAtlasEvent.CANVAS_SIZE_CHANGED, checkScroll);
 			
 		}
 		
@@ -52,6 +54,14 @@ package com.pixelrevision.textureAtlas{
 		private function newSWFLoaded(e:Event):void{
 			textureLayout.processSWF(_swfLoader.swf);
 			scrollWindow.content = textureLayout;
+			
+			for(var i:uint=0; i<POW_2.length; i++){
+				_settings.canvasWidth = POW_2[i];
+				_settings.canvasHeight = POW_2[i];
+				if(textureLayout.withinBounds) break;
+			}
+			menu.hInput.text = POW_2[i];
+			menu.wInput.text = POW_2[i];
 		}
 		
 		private function saveFiles(e:MouseEvent):void{
