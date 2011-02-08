@@ -85,10 +85,10 @@ package com.pixelrevision.textureAtlas{
 				if(selected.totalFrames > 1){
 					for(var m:uint=0; m<selected.totalFrames; m++){
 						selected.gotoAndStop(m+1);
-						drawItem(selected, selected.name + "_" + appendIntToString(m, 5) );
+						drawItem(selected, selected.name + "_" + appendIntToString(m, 5), selected.name);
 					}
 				}else{
-					drawItem(selected, selected.name);
+					drawItem(selected, selected.name, selected.name);
 				}
 			}
 			layoutChildren();
@@ -103,7 +103,7 @@ package com.pixelrevision.textureAtlas{
 			return outString + numString;
 		}
 		
-		private function drawItem(clip:MovieClip, name:String = ""):TextureItem{
+		private function drawItem(clip:MovieClip, name:String = "", baseName:String =""):TextureItem{
 			var label:String = "";
 			var bounds:Rectangle = clip.getBounds(clip);
 			var itemW:Number = Math.ceil(bounds.x + bounds.width);
@@ -114,7 +114,7 @@ package com.pixelrevision.textureAtlas{
 				_currentLab = clip.currentLabel;
 				label = _currentLab;
 			}
-			var item:TextureItem = new TextureItem(bmd, name, label);
+			var item:TextureItem = new TextureItem(bmd, name, label, baseName);
 			addItem(item);
 			return item;
 		}
@@ -126,9 +126,11 @@ package com.pixelrevision.textureAtlas{
 			var json:Object = new Object();
 			json.textures = [];
 			json.imagePath = _settings.textureName  + ".png";
+			
 			var xml:XML = new XML(<TextureAtlas></TextureAtlas>);
 			xml.@imagePath = _settings.textureName  + ".png";
 			
+		
 			for(var i:uint=0; i<_items.length; i++){
 				var matrix:Matrix = new Matrix();
 				matrix.tx = _items[i].x;
@@ -152,9 +154,12 @@ package com.pixelrevision.textureAtlas{
 				textureData.height = _items[i].height;
 				textureData.name = _items[i].textureName;
 				if(_items[i].frameName != "") textureData.frameLabel = _items[i].frameName;
-				
 				json.textures.push(textureData);
 			}
+			
+			var luaGenerator:LUAGenerator = new LUAGenerator();
+			var lua:String = luaGenerator.generate(_items);
+			// trace(lua);
 			
 			// now setup zip
 			var img:ByteArray = PNGEncoder.encode(bmd);
@@ -164,12 +169,15 @@ package com.pixelrevision.textureAtlas{
 			zip.addFile(_settings.textureName + ".png", img);
 			zip.addFileFromString(_settings.textureName + ".xml", xmlString);
 			zip.addFileFromString(_settings.textureName + ".json", jsonString);
+			zip.addFileFromString(_settings.textureName + ".lua", lua);
 			
 			// save
 			var zipArray:ByteArray = new ByteArray();
 			zip.serialize(zipArray, true);
 			var fr:FileReference = new FileReference();
 			fr.save(zipArray, _settings.textureName + ".zip");
+			
+			
 			
 			drawBounds(null);
 		}
