@@ -127,7 +127,7 @@ package com.pixelrevision.textureAtlas{
 		public function save():void{
 			graphics.clear();
 			// prepare files
-			var bmd:BitmapData = new BitmapData(width, height, true, 0x000000);
+			var bmd:BitmapData = new BitmapData(_settings.canvasWidth, _settings.canvasHeight, true, 0x000000);
 			var json:Object = new Object();
 			json.textures = [];
 			json.imagePath = _settings.textureName  + ".png";
