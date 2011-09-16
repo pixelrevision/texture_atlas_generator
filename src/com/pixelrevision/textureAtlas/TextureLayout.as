@@ -135,12 +135,17 @@ package com.pixelrevision.textureAtlas{
 			var xml:XML = new XML(<TextureAtlas></TextureAtlas>);
 			xml.@imagePath = _settings.textureName  + ".png";
 			
-		
+			
+			// add a folder with all the images
+			
+			
 			for(var i:uint=0; i<_items.length; i++){
+				
 				var matrix:Matrix = new Matrix();
 				matrix.tx = _items[i].x;
 				matrix.ty = _items[i].y;
 				bmd.draw(_items[i], matrix);
+				
 				// xml
 				var subText:XML = new XML(<SubTexture />); 
 				subText.@x = _items[i].x;
@@ -160,6 +165,9 @@ package com.pixelrevision.textureAtlas{
 				textureData.name = _items[i].textureName;
 				if(_items[i].frameName != "") textureData.frameLabel = _items[i].frameName;
 				json.textures.push(textureData);
+				
+				// make an item
+				
 			}
 			
 			var luaGenerator:LUAGenerator = new LUAGenerator();
@@ -176,11 +184,20 @@ package com.pixelrevision.textureAtlas{
 			zip.addFileFromString(_settings.textureName + ".json", jsonString);
 			zip.addFileFromString(_settings.textureName + ".lua", lua);
 			
+			for(i=0; i<_items.length; i++){
+				var ti:TextureItem = TextureItem(_items[i]);
+				var encoded:ByteArray = PNGEncoder.encode(ti.graphic);
+				zip.addFile("raw_images/" + ti.textureName + ".png", encoded);
+			}
+			
 			// save
 			var zipArray:ByteArray = new ByteArray();
 			zip.serialize(zipArray, true);
 			var fr:FileReference = new FileReference();
 			fr.save(zipArray, _settings.textureName + ".zip");
+			
+			
+			
 			
 			
 			
